@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH << './lib' 
+
+require 'twirloc'
+require 'thor'
+
+Twirloc::CLI.start(ARGV)
