@@ -1,5 +1,7 @@
 module Twirloc
   class TweetFetcher
+    attr_reader :client, :username
+
     def initialize(client, username)
       @client ||= client
       @username ||= username
@@ -11,11 +13,11 @@ module Twirloc
 			response.empty? ? collection.flatten : collect_with_max_id(collection, response.last.id - 1, &block)
 		end
 
-		def fetch_all_tweets(user)
+		def fetch_all_tweets
 			collect_with_max_id do |max_id|
 				options = {:count => 200, :include_rts => true}
 				options[:max_id] = max_id unless max_id.nil?
-				@client.user_timeline(@username, options)
+				client.user_timeline(username, options)
 			end
 		end
   end

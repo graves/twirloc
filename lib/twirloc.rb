@@ -1,6 +1,8 @@
 require "twirloc/version"
 require "twirloc/twitter_client"
 require "twirloc/location_guesser"
+require "twirloc/tweet_fetcher"
+require "twirloc/tweet"
 require "thor"
 
 module Twirloc

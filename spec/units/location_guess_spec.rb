@@ -14,11 +14,11 @@ RSpec.describe Twirloc::LocationGuesser do
     end
   end
 
-  it "can get geolocation of all tweets" do
+  it "can get tweets with geolocation" do
     VCR.use_cassette("user_profile_location", record: :new_episodes) do
       guesser = described_class.new("davetroy")
-      location = guesser.user_profile_location
-      expect(location).to eq("Baltimore, MD")
+      tweets = guesser.user_tweets_with_geolocation
+      expect(tweets.first.coordinates).to eq([39.33090026, -76.6426334])
     end
   end
 end
