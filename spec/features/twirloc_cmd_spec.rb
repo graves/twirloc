@@ -34,9 +34,24 @@ RSpec.describe Twirloc, :type => :feature do
     expect(stdout).to match("enabled")
   end
 
-  it "`locate` returns best guest at a users location", :vcr do
-    stdout = capture(:stdout) { Twirloc::CLI.start(["locate", "davetroy"]) }
-    expect(stdout).to match("Philadelphia, PA")
+  describe "`geocenter_user_tweets`" do
+    context "some tweets have geolocations" do
+      it "returns city, state, country of geographic center", :vcr do
+        VCR.use_cassette("geocenter_user_tweets", record: :new_episodes) do
+          stdout = capture(:stdout) { Twirloc::CLI.start(["geocenter_user_tweets", "davetroy"]) }
+          expect(stdout).to match("Georgia, VT, USA")
+        end
+      end
+    end
+
+    context "no tweets have geolocations" do
+      it "indicates that there is no geolocation data on the tweets", :vcr do
+        VCR.use_cassette("geocenter_user_tweets_none", record: :new_episodes) do
+          stdout = capture(:stdout) { Twirloc::CLI.start(["geocenter_user_tweets", "dqt"]) }
+          expect(stdout).to match("No tweets with geolocation!")
+        end
+      end
+    end
   end
 
 =begin

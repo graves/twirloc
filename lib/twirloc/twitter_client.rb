@@ -24,6 +24,10 @@ module Twirloc
       client.user(username).geo_enabled?
     end
 
+    def user_tweets_geo_center(username)
+      LocationGuesser.new(username).user_tweets_geolocation_center
+    end
+
     def guess_location(username)
       LocationGuesser.new(username).location
     end

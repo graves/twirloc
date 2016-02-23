@@ -37,4 +37,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "twitter"
   spec.add_runtime_dependency "thor"
   spec.add_runtime_dependency "dotenv"
+  spec.add_runtime_dependency "faraday"
 end

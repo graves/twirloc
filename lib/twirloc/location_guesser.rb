@@ -12,10 +12,16 @@ module Twirloc
       @client ||= TwitterClient.new
     end
 
-    def locate
+    def user_tweets_geolocation_center
+      # Geographic centerpoint of users geolocation metadata from tweets
+      coordinates = user_tweets_with_geolocation.map { |t| t.coordinates }
+      return "No tweets with geolocation!" if coordinates.empty?
+      midpoint = MidpointCalculator.calculate(coordinates)
+      GoogleLocation.new(coords: midpoint).to_s
     end
 
     def user_profile_location
+      # String from top of users profile indicating location
       client.user(username).location || ""
     end
 
@@ -23,6 +29,8 @@ module Twirloc
       geo_tweets = geo_only(TweetFetcher.new(client, username).fetch_all_tweets)
       wrap_tweets(geo_tweets)
     end
+
+    private
 
     def geo_only(tweets)
       tweets.select { |t| t.geo? }
